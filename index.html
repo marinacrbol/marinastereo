@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marina Stereo 91.7 FM | El Carmen de Bolívar - Colombia</title>
+
+<style>
+
+body{
+margin:0;
+background:#0f172a;
+font-family:Arial;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+
+.player{
+background:#1e293b;
+padding:40px;
+border-radius:15px;
+text-align:center;
+width:340px;
+box-shadow:0 0 25px rgba(0,0,0,0.6);
+}
+
+.logo{
+font-size:24px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+.location{
+font-size:14px;
+opacity:0.8;
+margin-bottom:20px;
+}
+
+.play{
+font-size:20px;
+padding:14px 30px;
+border:none;
+border-radius:50px;
+background:#22c55e;
+color:white;
+cursor:pointer;
+margin-top:15px;
+}
+
+.play:hover{
+background:#16a34a;
+}
+
+.song{
+margin-top:15px;
+font-size:15px;
+color:#38bdf8;
+}
+
+.cover{
+margin-top:20px;
+width:200px;
+height:200px;
+border-radius:10px;
+object-fit:cover;
+box-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="player">
+
+<div class="logo">
+🎧 Marina Stereo 91.7 FM
+</div>
+
+<div class="location">
+El Carmen de Bolívar - Colombia
+</div>
+
+<img id="cover" class="cover" src="https://i.imgur.com/8Km9tLL.png" alt="Carátula">
+
+<audio id="radio">
+<source src="https://stream.zeno.fm/momzs1lrytjtv" type="audio/mpeg">
+</audio>
+
+<button class="play" onclick="togglePlay()" id="playBtn">
+▶ Escuchar en vivo
+</button>
+
+<div class="song" id="song">
+🎵 En vivo
+</div>
+
+</div>
+
+<script>
+
+var audio=document.getElementById("radio");
+var btn=document.getElementById("playBtn");
+
+function togglePlay(){
+
+if(audio.paused){
+audio.play();
+btn.innerHTML="⏸ Pausar";
+}else{
+audio.pause();
+btn.innerHTML="▶ Escuchar en vivo";
+}
+
+}
+
+function loadSong(){
+
+fetch("https://api.zeno.fm/mounts/metadata/stream/momzs1lrytjtv")
+.then(response=>response.json())
+.then(data=>{
+
+let title="En vivo";
+
+if(data.mounts && data.mounts[0] && data.mounts[0].title){
+title=data.mounts[0].title;
+}
+
+document.getElementById("song").innerHTML="🎵 "+title;
+
+loadCover(title);
+
+})
+
+.catch(()=>{
+document.getElementById("song").innerHTML="🎵 En vivo";
+});
+
+}
+
+function loadCover(song){
+
+let query=encodeURIComponent(song);
+
+fetch("https://itunes.apple.com/search?term="+query+"&limit=1")
+.then(res=>res.json())
+.then(data=>{
+
+if(data.results.length>0){
+document.getElementById("cover").src=data.results[0].artworkUrl100.replace("100x100","300x300");
+}
+
+});
+
+}
+
+setInterval(loadSong,8000);
+
+loadSong();
+
+</script>
+
+</body>
+</html>
