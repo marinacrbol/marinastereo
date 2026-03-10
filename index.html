@@ -2,7 +2,6 @@
 <html lang="es">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -28,66 +27,66 @@ justify-content:center;
 }
 
 .overlay{
-background:rgba(0,0,0,0.70);
+background:rgba(0,0,0,0.75);
 padding:40px;
 border-radius:15px;
 width:340px;
 box-shadow:0 0 25px rgba(0,0,0,0.6);
 }
 
-.logo{
-width:240px;
+.cover{
+width:180px;
+height:180px;
+border-radius:10px;
 margin-bottom:15px;
+object-fit:cover;
 }
 
 h2{
 margin:5px 0;
 font-size:22px;
-text-shadow:0 0 12px rgba(0,0,0,0.8);
+text-shadow:0 0 10px rgba(0,0,0,0.9);
 }
 
 .location{
 font-size:14px;
 margin-bottom:20px;
 opacity:0.9;
-text-shadow:0 0 10px rgba(0,0,0,0.9);
 }
 
 .play{
-background:#00d084;
+background:#1db954;
 border:none;
 padding:12px 25px;
+border-radius:30px;
 font-size:16px;
-border-radius:25px;
-cursor:pointer;
 color:white;
-font-weight:bold;
-margin-top:10px;
+cursor:pointer;
+margin-bottom:20px;
 }
 
 .play:hover{
-background:#00a86b;
+background:#17a74a;
 }
 
-.social{
-margin-top:20px;
-font-size:24px;
-}
-
-.social a{
+.social img{
+width:35px;
 margin:10px;
-text-decoration:none;
+transition:0.3s;
+}
+
+.social img:hover{
+transform:scale(1.2);
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="overlay">
 
-<img src="logotipo.jpg" class="logo">
+<img id="cover" class="cover" src="logo.jpg">
 
 <h2>Marina Stereo 91.7 FM</h2>
 
@@ -105,11 +104,17 @@ El Carmen de Bolívar - Colombia
 
 <div class="social">
 
-<a href="https://wa.me/573218178263" target="_blank">📲</a>
+<a href="https://wa.me/573218178263" target="_blank">
+<img src="Whatsapp.png">
+</a>
 
-<a href="https://www.instagram.com/marinastereo_arc/" target="_blank">📷</a>
+<a href="https://www.instagram.com/marinastereo_arc/" target="_blank">
+<img src="instagram.png">
+</a>
 
-<a href="https://www.facebook.com/share/185JMgMCwJ/" target="_blank">📘</a>
+<a href="https://www.facebook.com/share/185JMgMCwJ/" target="_blank">
+<img src="facebook.png">
+</a>
 
 </div>
 
@@ -123,19 +128,46 @@ var btn=document.getElementById("playBtn");
 function togglePlay(){
 
 if(audio.paused){
+
 audio.play();
 btn.innerHTML="⏸ Pausar";
-}
 
-else{
+}else{
+
 audio.pause();
 btn.innerHTML="▶ Escuchar en vivo";
+
 }
 
 }
+
+/* CARATULA AUTOMÁTICA */
+
+async function cargarCaratula(){
+
+try{
+
+let data=await fetch("https://api.streamafrica.net/new.php?url=https://stream.zeno.fm/momzs1lrytjtv");
+let json=await data.json();
+
+let artista=json.artist;
+let cancion=json.title;
+
+let portada="https://api.streamafrica.net/cover.php?artist="+artista+"&title="+cancion;
+
+document.getElementById("cover").src=portada;
+
+}catch(e){
+
+console.log("No se pudo cargar carátula");
+
+}
+
+}
+
+setInterval(cargarCaratula,15000);
 
 </script>
 
 </body>
 </html>
-
