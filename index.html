@@ -3,70 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marina Stereo 91.7 FM | El Carmen de Bolívar - Colombia</title>
+
+<title>Marina Stereo 91.7 FM | El Carmen de Bolívar</title>
 
 <style>
 
 body{
 margin:0;
-background:#0f172a;
-font-family:Arial;
+font-family:Arial, Helvetica, sans-serif;
 color:white;
+text-align:center;
+
+background-image:url('banner.jpg');
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
+
+height:100vh;
 display:flex;
 align-items:center;
 justify-content:center;
-height:100vh;
 }
 
-.player{
-background:#1e293b;
+.overlay{
+background:rgba(0,0,0,0.75);
 padding:40px;
 border-radius:15px;
-text-align:center;
 width:340px;
-box-shadow:0 0 25px rgba(0,0,0,0.6);
+box-shadow:0 0 20px rgba(0,0,0,0.6);
 }
 
 .logo{
-font-size:24px;
-margin-bottom:5px;
-font-weight:bold;
+width:180px;
+margin-bottom:10px;
+}
+
+h2{
+margin:5px 0;
 }
 
 .location{
 font-size:14px;
 opacity:0.8;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
 .play{
-font-size:20px;
-padding:14px 30px;
+font-size:18px;
+padding:15px 35px;
 border:none;
 border-radius:50px;
-background:#22c55e;
+background:#00e676;
 color:white;
 cursor:pointer;
 margin-top:15px;
 }
 
 .play:hover{
-background:#16a34a;
+background:#00c853;
 }
 
-.song{
-margin-top:15px;
-font-size:15px;
-color:#38bdf8;
+.social{
+margin-top:25px;
 }
 
-.cover{
-margin-top:20px;
-width:200px;
-height:200px;
-border-radius:10px;
-object-fit:cover;
-box-shadow:0 0 10px rgba(0,0,0,0.5);
+.social a{
+margin:0 12px;
+font-size:26px;
+text-decoration:none;
+color:white;
+}
+
+.social a:hover{
+opacity:0.7;
 }
 
 </style>
@@ -74,17 +83,15 @@ box-shadow:0 0 10px rgba(0,0,0,0.5);
 
 <body>
 
-<div class="player">
+<div class="overlay">
 
-<div class="logo">
-🎧 Marina Stereo 91.7 FM
-</div>
+<img src="logotipo.jpg" class="logo">
+
+<h2>Marina Stereo 91.7 FM</h2>
 
 <div class="location">
 El Carmen de Bolívar - Colombia
 </div>
-
-<img id="cover" class="cover" src="https://i.imgur.com/8Km9tLL.png" alt="Carátula">
 
 <audio id="radio">
 <source src="https://stream.zeno.fm/momzs1lrytjtv" type="audio/mpeg">
@@ -94,8 +101,14 @@ El Carmen de Bolívar - Colombia
 ▶ Escuchar en vivo
 </button>
 
-<div class="song" id="song">
-🎵 En vivo
+<div class="social">
+
+<a href="https://wa.me/573218178263" target="_blank">📲</a>
+
+<a href="https://www.instagram.com/marinastereo_arc/" target="_blank">📸</a>
+
+<a href="https://www.facebook.com/share/185JMgMCwJ/" target="_blank">📘</a>
+
 </div>
 
 </div>
@@ -116,50 +129,6 @@ btn.innerHTML="▶ Escuchar en vivo";
 }
 
 }
-
-function loadSong(){
-
-fetch("https://api.zeno.fm/mounts/metadata/stream/momzs1lrytjtv")
-.then(response=>response.json())
-.then(data=>{
-
-let title="En vivo";
-
-if(data.mounts && data.mounts[0] && data.mounts[0].title){
-title=data.mounts[0].title;
-}
-
-document.getElementById("song").innerHTML="🎵 "+title;
-
-loadCover(title);
-
-})
-
-.catch(()=>{
-document.getElementById("song").innerHTML="🎵 En vivo";
-});
-
-}
-
-function loadCover(song){
-
-let query=encodeURIComponent(song);
-
-fetch("https://itunes.apple.com/search?term="+query+"&limit=1")
-.then(res=>res.json())
-.then(data=>{
-
-if(data.results.length>0){
-document.getElementById("cover").src=data.results[0].artworkUrl100.replace("100x100","300x300");
-}
-
-});
-
-}
-
-setInterval(loadSong,8000);
-
-loadSong();
 
 </script>
 
