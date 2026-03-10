@@ -8,6 +8,10 @@
 
 <title>Marina Stereo 91.7 FM | El Carmen de Bolívar</title>
 
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#1db954">
+
 <style>
 
 body{
@@ -37,7 +41,7 @@ box-shadow:0 0 25px rgba(0,0,0,0.6);
 
 }
 
-/* AREA DE CARATULA */
+/* CARATULA */
 
 .cover{
 
@@ -68,8 +72,6 @@ object-fit:contain;
 
 }
 
-/* TITULO */
-
 h2{
 
 margin:5px 0;
@@ -77,8 +79,6 @@ font-size:22px;
 text-shadow:0 0 10px rgba(0,0,0,0.9);
 
 }
-
-/* UBICACION */
 
 .location{
 
@@ -88,7 +88,7 @@ opacity:0.9;
 
 }
 
-/* BOTON PLAY */
+/* PLAY */
 
 .play{
 
@@ -109,7 +109,7 @@ background:#17a74a;
 
 }
 
-/* BOTON COMPARTIR */
+/* SHARE */
 
 .share{
 
@@ -146,6 +146,18 @@ transform:scale(1.2);
 
 }
 
+.install{
+
+margin-top:15px;
+background:#ff9800;
+border:none;
+padding:10px 20px;
+border-radius:25px;
+color:white;
+cursor:pointer;
+
+}
+
 </style>
 
 </head>
@@ -153,8 +165,6 @@ transform:scale(1.2);
 <body>
 
 <div class="overlay">
-
-<!-- CARATULA -->
 
 <div class="cover">
 
@@ -165,9 +175,7 @@ transform:scale(1.2);
 <h2>Marina Stereo 91.7 FM</h2>
 
 <div class="location">
-
 El Carmen de Bolívar - Colombia
-
 </div>
 
 <audio id="radio">
@@ -177,35 +185,29 @@ El Carmen de Bolívar - Colombia
 </audio>
 
 <button class="play" onclick="togglePlay()" id="playBtn">
-
 ▶ Escuchar en vivo
-
 </button>
 
 <button class="share" onclick="compartirRadio()">
+📲 Compartir emisora
+</button>
 
-📲 Compartir esta emisora
-
+<button class="install" id="installBtn" style="display:none;">
+📱 Instalar App
 </button>
 
 <div class="social">
 
 <a href="https://wa.me/573218178263" target="_blank">
-
 <img src="Whatsapp.png">
-
 </a>
 
 <a href="https://www.instagram.com/marinastereo_arc/" target="_blank">
-
 <img src="instagram.png">
-
 </a>
 
 <a href="https://www.facebook.com/share/185JMgMCwJ/" target="_blank">
-
 <img src="facebook.png">
-
 </a>
 
 </div>
@@ -215,7 +217,6 @@ El Carmen de Bolívar - Colombia
 <script>
 
 var audio=document.getElementById("radio");
-
 var btn=document.getElementById("playBtn");
 
 function togglePlay(){
@@ -223,15 +224,11 @@ function togglePlay(){
 if(audio.paused){
 
 audio.play();
-
 btn.innerHTML="⏸ Pausar";
 
-}
-
-else{
+}else{
 
 audio.pause();
-
 btn.innerHTML="▶ Escuchar en vivo";
 
 }
@@ -290,8 +287,27 @@ console.log("No se pudo cargar carátula");
 
 setInterval(cargarCaratula,15000);
 
+/* INSTALAR APP */
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt',(e)=>{
+
+e.preventDefault();
+
+deferredPrompt=e;
+
+document.getElementById("installBtn").style.display="block";
+
+});
+
+document.getElementById("installBtn").addEventListener("click",()=>{
+
+deferredPrompt.prompt();
+
+});
+
 </script>
 
 </body>
-
 </html>
