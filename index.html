@@ -33,15 +33,15 @@ justify-content:center;
 
 .overlay{
 
-background:rgba(0,0,0,0.75);
+background:rgba(0,0,0,0.78);
 padding:40px;
-border-radius:15px;
+border-radius:18px;
 width:340px;
-box-shadow:0 0 25px rgba(0,0,0,0.6);
+box-shadow:0 0 30px rgba(0,0,0,0.7);
 
 }
 
-/* AREA CARATULA */
+/* CARATULA */
 
 .cover{
 
@@ -49,9 +49,9 @@ width:200px;
 height:200px;
 
 margin:auto;
-margin-bottom:15px;
+margin-bottom:10px;
 
-border-radius:12px;
+border-radius:15px;
 
 background:white;
 
@@ -67,26 +67,42 @@ overflow:hidden;
 
 width:100%;
 height:100%;
-
 object-fit:contain;
 
 }
 
+/* TITULO EMISORA */
+
 h2{
 
-margin:5px 0;
+margin:8px 0;
 font-size:22px;
 text-shadow:0 0 10px rgba(0,0,0,0.9);
 
 }
 
+/* UBICACION */
+
 .location{
 
 font-size:14px;
-margin-bottom:20px;
+margin-bottom:10px;
 opacity:0.9;
 
 }
+
+/* TITULO CANCION */
+
+.song{
+
+font-size:14px;
+margin-bottom:18px;
+color:#1db954;
+font-weight:bold;
+
+}
+
+/* BOTON PLAY */
 
 .play{
 
@@ -107,9 +123,11 @@ background:#17a74a;
 
 }
 
+/* BOTON SHARE */
+
 .share{
 
-margin-top:10px;
+margin-top:8px;
 background:#007bff;
 border:none;
 padding:10px 20px;
@@ -126,9 +144,11 @@ background:#0056b3;
 
 }
 
+/* BOTON INSTALL */
+
 .install{
 
-margin-top:10px;
+margin-top:8px;
 background:#ff9800;
 border:none;
 padding:10px 20px;
@@ -144,10 +164,12 @@ background:#e68900;
 
 }
 
+/* REDES */
+
 .social img{
 
-width:38px;
-margin:10px;
+width:36px;
+margin:8px;
 transition:0.3s;
 
 }
@@ -176,6 +198,10 @@ transform:scale(1.2);
 
 <div class="location">
 El Carmen de Bolívar - Colombia
+</div>
+
+<div class="song" id="songTitle">
+🎵 Cargando canción...
 </div>
 
 <audio id="radio">
@@ -255,7 +281,7 @@ alert("Comparte este enlace: https://marinacrbol.github.io/marinastereo/");
 
 }
 
-/* CARATULA AUTOMATICA */
+/* CARATULA + METADATOS */
 
 async function cargarCaratula(){
 
@@ -266,8 +292,14 @@ let data=await fetch("https://api.streamafrica.net/new.php?url=https://stream.ze
 let json=await data.json();
 
 let artista=json.artist;
-
 let cancion=json.title;
+
+/* MOSTRAR TITULO */
+
+document.getElementById("songTitle").innerHTML =
+"🎵 " + artista + " - " + cancion;
+
+/* CARATULA */
 
 let portada="https://api.streamafrica.net/cover.php?artist="+artista+"&title="+cancion;
 
@@ -277,7 +309,7 @@ document.getElementById("coverImg").src=portada;
 
 catch(e){
 
-console.log("No se pudo cargar carátula");
+console.log("No se pudo obtener metadatos");
 
 }
 
@@ -305,17 +337,11 @@ deferredPrompt.prompt();
 
 });
 
-/* REGISTRAR SERVICE WORKER */
+/* SERVICE WORKER */
 
 if('serviceWorker' in navigator){
 
-navigator.serviceWorker.register('sw.js')
-
-.then(function(){
-
-console.log('Service Worker registrado');
-
-});
+navigator.serviceWorker.register('sw.js');
 
 }
 
