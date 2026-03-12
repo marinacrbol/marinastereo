@@ -9,7 +9,6 @@
 <title>Marina Stereo 91.7 FM | El Carmen de Bolívar</title>
 
 <link rel="manifest" href="manifest.json">
-
 <meta name="theme-color" content="#1db954">
 
 <style>
@@ -47,12 +46,10 @@ box-shadow:0 0 30px rgba(0,0,0,0.7);
 
 width:200px;
 height:200px;
-
 margin:auto;
-margin-bottom:10px;
+margin-bottom:12px;
 
 border-radius:15px;
-
 background:white;
 
 display:flex;
@@ -71,17 +68,12 @@ object-fit:contain;
 
 }
 
-/* TITULO EMISORA */
-
 h2{
 
-margin:8px 0;
+margin:6px 0;
 font-size:22px;
-text-shadow:0 0 10px rgba(0,0,0,0.9);
 
 }
-
-/* UBICACION */
 
 .location{
 
@@ -91,12 +83,10 @@ opacity:0.9;
 
 }
 
-/* TITULO CANCION */
-
 .song{
 
 font-size:14px;
-margin-bottom:18px;
+margin-bottom:20px;
 color:#1db954;
 font-weight:bold;
 
@@ -113,7 +103,7 @@ border-radius:30px;
 font-size:16px;
 color:white;
 cursor:pointer;
-margin-bottom:15px;
+margin-bottom:10px;
 
 }
 
@@ -123,7 +113,7 @@ background:#17a74a;
 
 }
 
-/* BOTON SHARE */
+/* BOTONES */
 
 .share{
 
@@ -138,14 +128,6 @@ cursor:pointer;
 
 }
 
-.share:hover{
-
-background:#0056b3;
-
-}
-
-/* BOTON INSTALL */
-
 .install{
 
 margin-top:8px;
@@ -157,14 +139,6 @@ color:white;
 cursor:pointer;
 
 }
-
-.install:hover{
-
-background:#e68900;
-
-}
-
-/* REDES */
 
 .social img{
 
@@ -212,9 +186,13 @@ El Carmen de Bolívar - Colombia
 ▶ Escuchar en vivo
 </button>
 
+<br>
+
 <button class="share" onclick="compartirRadio()">
 📲 Compartir emisora
 </button>
+
+<br>
 
 <button class="install" id="installBtn" style="display:none;">
 📱 Instalar APP
@@ -239,6 +217,8 @@ El Carmen de Bolívar - Colombia
 </div>
 
 <script>
+
+/* RADIO PLAYER */
 
 var audio=document.getElementById("radio");
 var btn=document.getElementById("playBtn");
@@ -281,35 +261,32 @@ alert("Comparte este enlace: https://marinacrbol.github.io/marinastereo/");
 
 }
 
-/* CARATULA + METADATOS */
+/* METADATA ZENO */
 
 async function cargarCaratula(){
 
 try{
 
-let data=await fetch("https://api.streamafrica.net/new.php?url=https://stream.zeno.fm/momzs1lrytjtv");
+let data = await fetch("https://api.streamafrica.net/new.php?url=https://stream.zeno.fm/momzs1lrytjtv");
 
-let json=await data.json();
+let json = await data.json();
 
-let artista=json.artist;
-let cancion=json.title;
-
-/* MOSTRAR TITULO */
+let artista = json.artist;
+let cancion = json.title;
 
 document.getElementById("songTitle").innerHTML =
 "🎵 " + artista + " - " + cancion;
 
-/* CARATULA */
+let portada =
+"https://api.streamafrica.net/cover.php?artist="+artista+"&title="+cancion;
 
-let portada="https://api.streamafrica.net/cover.php?artist="+artista+"&title="+cancion;
-
-document.getElementById("coverImg").src=portada;
+document.getElementById("coverImg").src = portada;
 
 }
 
 catch(e){
 
-console.log("No se pudo obtener metadatos");
+console.log("No se pudo obtener metadata");
 
 }
 
