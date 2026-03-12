@@ -9,6 +9,7 @@
 <title>Marina Stereo 91.7 FM | El Carmen de Bolívar</title>
 
 <link rel="manifest" href="manifest.json">
+
 <meta name="theme-color" content="#1db954">
 
 <style>
@@ -32,7 +33,7 @@ justify-content:center;
 
 .overlay{
 
-background:rgba(0,0,0,0.78);
+background:rgba(0,0,0,0.80);
 padding:40px;
 border-radius:18px;
 width:340px;
@@ -86,7 +87,7 @@ opacity:0.9;
 .song{
 
 font-size:14px;
-margin-bottom:20px;
+margin-bottom:18px;
 color:#1db954;
 font-weight:bold;
 
@@ -175,7 +176,7 @@ El Carmen de Bolívar - Colombia
 </div>
 
 <div class="song" id="songTitle">
-🎵 Cargando canción...
+🎵 En vivo
 </div>
 
 <audio id="radio">
@@ -218,7 +219,7 @@ El Carmen de Bolívar - Colombia
 
 <script>
 
-/* RADIO PLAYER */
+/* PLAYER */
 
 var audio=document.getElementById("radio");
 var btn=document.getElementById("playBtn");
@@ -261,7 +262,7 @@ alert("Comparte este enlace: https://marinacrbol.github.io/marinastereo/");
 
 }
 
-/* METADATA ZENO */
+/* METADATA + CARATULA */
 
 async function cargarCaratula(){
 
@@ -271,22 +272,30 @@ let data = await fetch("https://api.streamafrica.net/new.php?url=https://stream.
 
 let json = await data.json();
 
-let artista = json.artist;
-let cancion = json.title;
+let artista = json.artist || "";
+let cancion = json.title || "";
+
+if(artista !== "" && cancion !== ""){
 
 document.getElementById("songTitle").innerHTML =
 "🎵 " + artista + " - " + cancion;
 
 let portada =
-"https://api.streamafrica.net/cover.php?artist="+artista+"&title="+cancion;
+"https://api.streamafrica.net/cover.php?artist="+encodeURIComponent(artista)+"&title="+encodeURIComponent(cancion);
 
 document.getElementById("coverImg").src = portada;
 
+}else{
+
+document.getElementById("songTitle").innerHTML =
+"🎵 En vivo";
+
 }
 
-catch(e){
+}catch(e){
 
-console.log("No se pudo obtener metadata");
+document.getElementById("songTitle").innerHTML =
+"🎵 En vivo";
 
 }
 
